@@ -5,7 +5,7 @@ import { useDebounce } from "use-debounce";
 import { Album } from "./Album";
 import { Content, Item, Input, Label, Spinner, Text, Icon } from "native-base";
 
-export const SearchArtist = ({ handleFavorite, favorites }) => {
+export const SearchArtist = ({ handleFavorite, favorites, navigation }) => {
   const [searchValue, setSearchValue] = useState("");
   const [textToSearch] = useDebounce(searchValue, 500);
   const [options, setOptions] = useState([]);
@@ -45,6 +45,7 @@ export const SearchArtist = ({ handleFavorite, favorites }) => {
         options.map((item, index) => (
           <Album
             key={index}
+            navigation={navigation}
             data={item}
             handleFavorite={handleFavorite}
             favorites={favorites}

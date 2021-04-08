@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   List,
   Icon,
@@ -10,9 +10,15 @@ import {
   ListItem,
   Thumbnail,
 } from "native-base";
-import { StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 
-export const Album = ({ data, handleFavorite, handleDelete, favorites }) => {
+export const Album = ({
+  data,
+  handleFavorite,
+  handleDelete,
+  favorites,
+  navigation,
+}) => {
   const {
     country,
     currency,
@@ -22,6 +28,7 @@ export const Album = ({ data, handleFavorite, handleDelete, favorites }) => {
     collectionName,
     collectionPrice,
   } = data;
+  const [buttonPress, setButtonPress] = useState("");
   return (
     <List>
       <ListItem thumbnail>
@@ -33,11 +40,20 @@ export const Album = ({ data, handleFavorite, handleDelete, favorites }) => {
           />
         </Left>
         <Body>
-          <Text style={styles.textStyle}>{collectionName}</Text>
-          <Text style={styles.textStyle}>ArtistName:{artistName}</Text>
-          <Text style={styles.textStyle}>Country:{country}</Text>
-          <Text style={styles.textStyle}>Currency:{currency}</Text>
-          <Text style={styles.textStyle}>Price:{collectionPrice}</Text>
+          <Text> {buttonPress}</Text>
+          <Pressable
+            onPress={() => {
+              setButtonPress(
+                navigation.navigate("DetailScreen", { data: data })
+              );
+            }}
+          >
+            <Text style={styles.textStyle}>{collectionName}</Text>
+            <Text style={styles.textStyle}>ArtistName:{artistName}</Text>
+            <Text style={styles.textStyle}>Country:{country}</Text>
+            <Text style={styles.textStyle}>Currency:{currency}</Text>
+            <Text style={styles.textStyle}>Price:{collectionPrice}</Text>
+          </Pressable>
         </Body>
         {handleFavorite && (
           <Right>

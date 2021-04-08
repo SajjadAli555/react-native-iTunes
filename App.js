@@ -1,70 +1,18 @@
-import React, { useState, useEffect } from "react";
-import AppLoading from "expo-app-loading";
-import * as Font from "expo-font";
-import { StyleSheet, ScrollView } from "react-native";
-import { Container, Header, Title } from "native-base";
-import { Ionicons } from "@expo/vector-icons";
-import { Favorites } from "./src/components/Favorite";
-import { SearchArtist } from "./src/components/SearchArtist";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from "./src/screens/HomeScreen";
+import DetailScreen from "./src/screens/DetailScreen";
 
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
-  const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
-      ...Ionicons.font,
-    }).then(() => {
-      setIsReady(true);
-    });
-  }, []);
+  const Stack = createStackNavigator();
 
   return (
-    <ScrollView endFillColor="green">
-      {!isReady ? (
-        <AppLoading />
-      ) : (
-        <Container>
-          <Header>
-            <Title style={styles.titleStyle}>Search for iTunes App</Title>
-          </Header>
-          <Favorites
-            data={favorites}
-            handleDelete={(id) => {
-              const items = [...favorites].filter(
-                (item) => item.collectionId !== id
-              );
-              setFavorites(items);
-            }}
-          />
-          <SearchArtist
-            handleFavorite={(item) => {
-              const selectedItem = favorites.find(
-                (favItem) => favItem.collectionId === item.collectionId
-              );
-              if (selectedItem?.collectionId) {
-                const filteredItem = favorites.filter(
-                  (items) => items.collectionId !== item.collectionId
-                );
-                setFavorites(filteredItem);
-              } else {
-                const items = [...favorites, item];
-                setFavorites(items);
-              }
-            }}
-            favorites={favorites}
-          />
-        </Container>
-      )}
-    </ScrollView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="DetailScreen" component={DetailScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  titleStyle: {
-    fontSize: 25,
-    marginTop: 5,
-  },
-});
